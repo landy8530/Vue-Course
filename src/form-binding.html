@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="referrer" content="never">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Vue-Course</title>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- 因为 AJAX 库和通用工具的生态已经相当丰富，Vue 核心代码没有重复 -->
+    <!-- 提供这些功能以保持精简。这也可以让你自由选择自己更熟悉的工具。 -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+
+  </head>
+  <body>
+      <noscript>
+        <strong>We're sorry but weixin-manage doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      </noscript>
+
+      <!-- 你可以用 v-model 指令在表单 <input>、<textarea> 及 <select> 元素上创建双向数据绑定。它会根据控件类型自动选取正确的方法来更新元素。
+      尽管有些神奇，但 v-model 本质上不过是语法糖。它负责监听用户的输入事件以更新数据，并对一些极端场景进行一些特殊处理。 -->
+
+      <!-- v-model 会忽略所有表单元素的 value、checked、selected attribute 的初始值而总是将 Vue 实例的数据作为数据来源。
+      你应该通过 JavaScript 在组件的 data 选项中声明初始值。 -->
+
+      v-model 在内部为不同的输入元素使用不同的 property 并抛出不同的事件：
+      <ul>
+          <li>text 和 textarea 元素使用 value property 和 input 事件；</li>
+          <li>checkbox 和 radio 使用 checked property 和 change 事件；</li>
+          <li>select 字段将 value 作为 prop 并将 change 作为事件。</li>
+      </ul>
+
+      <div id="form-binding-demo">
+        <div><span style="color:red">文本</span></div>
+        <input v-model="message" placeholder="edit me">
+        <p>Message is: {{ message }}</p>
+        <br>
+        <div><span style="color:red">多文本</span></div>
+        <span>Multiline message is:</span>
+        <p style="white-space: pre-line;">{{ multiline_message }}</p>
+
+        <textarea v-model="message" placeholder="add multiple lines"></textarea>
+
+        <br>
+        <div><span style="color:red">单个复选框</span></div>
+        <input type="checkbox" id="checkbox" v-model="checked">
+        <label for="checkbox">{{ checked }}</label>
+        <br>
+        <div><span style="color:red">多个复选框（绑定到数组）</span></div>
+        <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+        <label for="jack">Jack</label>
+        <input type="checkbox" id="john" value="John" v-model="checkedNames">
+        <label for="john">John</label>
+        <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+        <label for="mike">Mike</label>
+        <br>
+        <span>Checked names: {{ checkedNames }}</span>
+        <div><span style="color:red">单选框</span></div>
+        <input type="radio" id="one" value="One" v-model="picked">
+        <label for="one">One</label>
+        <br>
+        <input type="radio" id="two" value="Two" v-model="picked">
+        <label for="two">Two</label>
+        <br>
+        <span>Picked: {{ picked }}</span>
+        <div><span style="color:red">单选下拉框</span></div>
+        <div id="example-5">
+          <select v-model="selected">
+            <option disabled value="">请选择</option>
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+          </select>
+          <span>Selected: {{ selected }}</span>
+        </div>
+        <div><span style="color:red">多选下拉框（绑定到数组）</span></div>
+        <select v-model="multi_selected" multiple style="width: 50px;">
+          <option>A</option>
+          <option>B</option>
+          <option>C</option>
+        </select>
+        <br>
+        <span>Selected: {{ multi_selected }}</span>
+
+        <br>
+        <div><span style="color:red">用 v-for 渲染的动态选项</span></div>
+        <select v-model="vForSelected">
+          <option v-for="option in options" v-bind:value="option.value">
+            {{ option.text }}
+          </option>
+        </select>
+        <span>Selected: {{ vForSelected }}</span>
+      </div>
+
+
+
+      <script>
+        new Vue({
+          el: '#form-binding-demo',
+          data: {
+              message:'',
+              multiline_message: '',
+              checked: true,
+              checkedNames:[],
+              picked:'',
+              selected:'',
+              multi_selected:[],
+              vForSelected: 'A',
+              options: [
+                { text: 'One', value: 'A' },
+                { text: 'Two', value: 'B' },
+                { text: 'Three', value: 'C' }
+              ]
+          }
+        })
+
+      </script>
+
+
+  </body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="referrer" content="never">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Vue-Course</title>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- 因为 AJAX 库和通用工具的生态已经相当丰富，Vue 核心代码没有重复 -->
+    <!-- 提供这些功能以保持精简。这也可以让你自由选择自己更熟悉的工具。 -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+
+  </head>
+  <body>
+      <noscript>
+        <strong>We're sorry but weixin-manage doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      </noscript>
+      <!-- 建议尽可能在使用 v-for 时提供 key attribute，除非遍历输出的 DOM 内容非常简单，或者是刻意依赖默认行为以获取性能上的提升。
+      因为它是 Vue 识别节点的一个通用机制，key 并不仅与 v-for 特别关联。后面我们将在指南中看到，它还具有其它用途。 -->
+      <!-- 我们可以用 v-for 指令基于一个数组来渲染一个列表。v-for 指令需要使用 item in items 形式的特殊语法，其中 items 是源数据数组，
+      而 item 则是被迭代的数组元素的别名。 -->
+      <ul id="example-1">
+        <li v-for="item in items" :key="item.message">
+          {{ item.message }}
+        </li>
+      </ul>
+
+      <!-- 在 v-for 块中，我们可以访问所有父作用域的 property。v-for 还支持一个可选的第二个参数，即当前项的索引。 -->
+      <ul id="example-2">
+        <li v-for="(item, index) in items">
+          {{ parentMessage }} - {{ index }} - {{ item.message }}
+        </li>
+      </ul>
+
+      <!-- 你也可以用 v-for 来遍历一个对象的 property。 -->
+      <ul id="v-for-object" class="demo">
+        <li v-for="value in object">
+          {{ value }}
+        </li>
+      </ul>
+
+      <br/>
+      <!-- 你也可以提供第二个的参数为 property 名称 (也就是键名)： -->
+      <div id="v-for-object2">
+        <div v-for="(value, name) in object">
+          {{ name }}: {{ value }}
+        </div>
+      </div>
+
+      <br/>
+      <!-- 还可以用第三个参数作为索引： -->
+      <div id="v-for-object3">
+        <div v-for="(value, name, index) in object">
+          {{ index }}. {{ name }}: {{ value }}
+        </div>
+      </div>
+
+      <br/>
+      <div><span style="color:red">有时，我们想要显示一个数组经过过滤或排序后的版本，而不实际变更或重置原始数据。在这种情况下，可以创建一个计算属性，来返回过滤或排序后的数组。</span></div>
+      <ul id="demo1" class="demo">
+        <li v-for="n in evenNumbers">{{ n }}</li>
+      </ul>
+
+      <div><span style="color:red">在计算属性不适用的情况下 (例如，在嵌套 v-for 循环中) 你可以使用一个方法：</span></div>
+      <!-- 在计算属性不适用的情况下 (例如，在嵌套 v-for 循环中) 你可以使用一个方法： -->
+      <div id="demo2">
+        <ul v-for="set in sets">
+          <li v-for="n in even(set)">{{ n }}</li>
+        </ul>
+      </div>
+
+      <script>
+        var example1 = new Vue({
+          el: '#example-1',
+          data: {
+            items: [
+              { message: 'Foo' },
+              { message: 'Bar' }
+            ]
+          }
+        })
+
+        var example2 = new Vue({
+          el: '#example-2',
+          data: {
+            parentMessage: 'Parent',
+            items: [
+              { message: 'Foo' },
+              { message: 'Bar' }
+            ]
+          }
+        })
+
+        new Vue({
+          el: '#v-for-object',
+          data: {
+            object: {
+              title: 'How to do lists in Vue',
+              author: 'Jane Doe',
+              publishedAt: '2016-04-10'
+            }
+          }
+        })
+        new Vue({
+          el: '#v-for-object2',
+          data: {
+            object: {
+              title: 'How to do lists in Vue',
+              author: 'Jane Doe',
+              publishedAt: '2016-04-10'
+            }
+          }
+        })
+        new Vue({
+          el: '#v-for-object3',
+          data: {
+            object: {
+              title: 'How to do lists in Vue',
+              author: 'Jane Doe',
+              publishedAt: '2016-04-10'
+            }
+          }
+        })
+
+        new Vue({
+          el: '#demo1',
+          data: {
+            numbers: [ 1, 2, 3, 4, 5 ]
+          },
+          computed: {
+            evenNumbers: function () {
+              return this.numbers.filter(function (number) {
+                return number % 2 === 0
+              })
+            }
+          }
+
+        })
+
+        new Vue({
+          el: '#demo2',
+          data: {
+            sets: [[ 1, 2, 3, 4, 5 ], [6, 7, 8, 9, 10]]
+          },
+          methods: {
+            even: function (numbers) {
+              return numbers.filter(function (number) {
+                return number % 2 === 0
+              })
+            }
+          }
+        })
+
+      </script>
+
+
+  </body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="referrer" content="never">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Vue-Course</title>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- 因为 AJAX 库和通用工具的生态已经相当丰富，Vue 核心代码没有重复 -->
+    <!-- 提供这些功能以保持精简。这也可以让你自由选择自己更熟悉的工具。 -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+
+    <script src="../basic-component.js"></script>
+  </head>
+  <body>
+      <noscript>
+        <strong>We're sorry but weixin-manage doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      </noscript>
+
+      <!-- 注意当点击按钮时，每个组件都会各自独立维护它的 count。因为你每用一次组件，就会有一个它的新实例被创建。 -->
+
+      <div id="components-demo">
+        <button-counter></button-counter>
+        <button-counter></button-counter>
+        <button-counter></button-counter>
+
+        <div><span style="color:red">通过 Prop 向子组件传递数据</span></div>
+        <blog-post title="My journey with Vue"></blog-post>
+        <blog-post title="Blogging with Vue"></blog-post>
+        <blog-post title="Why Vue is so fun"></blog-post>
+
+      </div>
+      <div><span style="color:red">在 data 里有一个博文的数组,使用 v-bind 来动态传递 prop</span></div>
+      <!-- 在一个典型的应用中，你可能在 data 里有一个博文的数组 -->
+      <div id="blog-post-demo">
+
+        <blog-post
+          v-for="post in posts"
+          v-bind:key="post.id"
+          v-bind:title="post.title"
+        ></blog-post>
+
+      </div>
+      <div><span style="color:red">单个根元素</span></div>
+      <div id="new-blog-post-demo">
+        <new-blog-post
+          v-for="post in posts"
+          v-bind:key="post.id"
+          v-bind:post="post"
+        ></new-blog-post>
+      </div>
+
+      <!-- 当点击这个按钮时，我们需要告诉父级组件放大所有博文的文本。幸好 Vue 实例提供了一个自定义事件的系统来解决这个问题。父级组件可以像处理 native DOM 事件一样通过 v-on 监听子组件实例的任意事件： -->
+      <!-- 然后当在父级组件监听这个事件的时候，我们可以通过 $event 访问到被抛出的这个值： -->
+      <div><span style="color:red">监听子组件事件</span></div>
+      <div id="blog-posts-events-demo">
+        <div :style="{ fontSize: postFontSize + 'em' }">
+          <new-blog-post
+            v-for="post in posts"
+            v-bind:key="post.id"
+            v-bind:post="post"
+            v-on:enlarge-text="postFontSize += $event"
+          ></new-blog-post>
+        </div>
+      </div>
+
+      <div><span style="color:red">监听子组件事件处理函数是一个方法</span></div>
+      <div id="blog-posts-events-demo-2">
+        <div :style="{ fontSize: postFontSize + 'em' }">
+          <new-blog-post
+            v-for="post in posts"
+            v-bind:key="post.id"
+            v-bind:post="post"
+            v-on:enlarge-text="onEnlargeText"
+          ></new-blog-post>
+        </div>
+
+        <custom-input v-model="searchText"></custom-input>
+
+
+        <alert-box>
+          Something bad happened.
+        </alert-box>
+      </div>
+
+      <script>
+          new Vue({ el: '#components-demo' })
+          // 如上所示，你会发现我们可以使用 v-bind 来动态传递 prop。这在你一开始不清楚要渲染的具体内容，比如从一个 API 获取博文列表的时候，是非常有用的。
+          new Vue({
+            el: '#blog-post-demo',
+            data: {
+              posts: [
+                { id: 1, title: 'My journey with Vue' },
+                { id: 2, title: 'Blogging with Vue' },
+                { id: 3, title: 'Why Vue is so fun' }
+              ]
+            }
+          })
+          //单个根元素的问题
+          new Vue({
+            el: '#new-blog-post-demo',
+            data: {
+              posts: [
+                { id: 1, title: 'My journey with Vue',content: 'Happy!!!' },
+                { id: 2, title: 'Blogging with Vue',content: 'Have a good day!!!' },
+                { id: 3, title: 'Why Vue is so fun',content: 'Have fun!!!' }
+              ]
+            }
+          })
+
+          //监听子组件事件
+          new Vue({
+            el: '#blog-posts-events-demo',
+            data: {
+              posts: [
+                { id: 1, title: 'My journey with Vue',content: 'Happy!!!' },
+                { id: 2, title: 'Blogging with Vue',content: 'Have a good day!!!' },
+                { id: 3, title: 'Why Vue is so fun',content: 'Have fun!!!' }
+              ],
+              postFontSize: 1
+            }
+          })
+
+          //监听子组件事件
+          new Vue({
+            el: '#blog-posts-events-demo-2',
+            data: {
+              posts: [
+                { id: 1, title: 'My journey with Vue',content: 'Happy!!!' },
+                { id: 2, title: 'Blogging with Vue',content: 'Have a good day!!!' },
+                { id: 3, title: 'Why Vue is so fun',content: 'Have fun!!!' }
+              ],
+              postFontSize: 1
+            },
+            methods: {
+              onEnlargeText: function (enlargeAmount) {
+                this.postFontSize += enlargeAmount
+              }
+            }
+          })
+
+      </script>
+
+
+  </body>
+</html>

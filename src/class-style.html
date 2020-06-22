@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="referrer" content="never">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Vue-Course</title>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- 因为 AJAX 库和通用工具的生态已经相当丰富，Vue 核心代码没有重复 -->
+    <!-- 提供这些功能以保持精简。这也可以让你自由选择自己更熟悉的工具。 -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+
+  </head>
+  <body>
+      <noscript>
+        <strong>We're sorry but weixin-manage doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      </noscript>
+      <!-- 操作元素的 class 列表和内联样式是数据绑定的一个常见需求。
+      因为它们都是 attribute，所以我们可以用 v-bind 处理它们：
+      只需要通过表达式计算出字符串结果即可。
+      不过，字符串拼接麻烦且易错。
+      因此，在将 v-bind 用于 class 和 style 时，Vue.js 做了专门的增强。表达式结果的类型除了字符串之外，
+      还可以是对象或数组。 -->
+
+      <div v-bind:class="classObject">class style</div>
+
+      <script>
+        var vm = new Vue({
+          data: {
+            isActive: true,
+            error: null
+          },
+          computed: {
+            classObject: function () {
+              return {
+                active: this.isActive && !this.error,
+                'text-danger': this.error && this.error.type === 'fatal'
+              }
+            }
+          }
+
+        })
+
+      </script>
+
+
+  </body>
+</html>
