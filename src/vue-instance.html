@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="referrer" content="never">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Vue-Course</title>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but weixin-manage doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+
+    <div id="app">
+      <p>{{ foo }}</p>
+      <!-- 这里的 `foo` 不会更新！ -->
+      <button v-on:click="foo = 'baz'">Change it</button>
+    </div>
+
+
+    <script>
+      var obj = {
+        foo: 'bar'
+      }
+
+      //这里唯一的例外是使用 Object.freeze()，这会阻止修改现有的 property，也意味着响应系统无法再追踪变化。
+      Object.freeze(obj)
+
+      new Vue({
+        el: '#app',
+        data: obj
+      })
+
+      // 除了数据 property，Vue 实例还暴露了一些有用的实例 property 与方法。它们都有前缀 $，以便与用户定义的 property 区分开来
+      var data = { a: 1 }
+      var vm = new Vue({
+        el: '#example',
+        data: data
+      })
+
+      vm.$data === data // => true
+      vm.$el === document.getElementById('example') // => true
+
+      // $watch 是一个实例方法
+      vm.$watch('a', function (newValue, oldValue) {
+        // 这个回调将在 `vm.a` 改变后调用
+      })
+    </script>
+
+  </body>
+</html>
